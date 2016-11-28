@@ -1,16 +1,15 @@
 {
-  "name": "material-ui-example-webpack",
+  "name": "material-ui-credit-card-blocker",
   "version": "0.16.4",
-  "description": "Sample project that uses Material-UI",
+  "description": "Credit card blocker",
   "repository": {
     "type": "git",
-    "url": "https://github.com/callemall/material-ui.git"
+    "url": ""
   },
   "scripts": {
     "start": "webpack-dev-server --config webpack-dev-server.config.js --progress --inline --colors",
     "build": "webpack --config webpack-production.config.js --progress --colors"
   },
-  "private": true,
   "devDependencies": {
     "babel-core": "^6.18.2",
     "babel-loader": "^6.2.8",
