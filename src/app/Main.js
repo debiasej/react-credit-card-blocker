@@ -3,14 +3,7 @@ import AppBar from 'material-ui/AppBar';
 import {deepOrange500} from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import BankCardContainer from './BankCardContainer.js';
-
-// const styles = {
-//   container: {
-//     textAlign: 'center',
-//     paddingTop: 200,
-//   },
-// };
+import BankCardContainer from './bank-card-container.js';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -21,10 +14,6 @@ const muiTheme = getMuiTheme({
 class Main extends Component {
   constructor(props, context) {
     super(props, context);
-
-    // this.state = {
-    //   open: false,
-    // };
   }
 
   render() {
