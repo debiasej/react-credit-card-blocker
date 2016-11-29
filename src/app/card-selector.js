@@ -4,7 +4,7 @@ import MenuItem from 'material-ui/MenuItem';
 
 const styles = {
   customWidth: {
-    width: 150,
+    width: 250,
   },
 };
 
@@ -13,16 +13,8 @@ class CardSelector extends Component {
     super(props);
 
     this.state = {
-      value: 0,
-      cards: []
+      value: 0
     };
-
-    this.state.cards =  this.props.cards.map( (card, index) => {
-      debugger;
-      return (
-        <MenuItem key={index} value={index} primaryText= {`Card ${card.alias}`} />
-      );
-    });
   }
 
   handleChange = (event, index, value) => {
@@ -30,14 +22,25 @@ class CardSelector extends Component {
   };
 
   render() {
+
+    const jsxCards = this.props.cards.map( (card, index) => {
+      return (
+        <MenuItem
+          key={index}
+          value={index}
+          primaryText= {`${card.alias != "" ? card.alias : card.identificador}`} />
+      );
+    })
+
     return (
       <div>
         <SelectField
-          floatingLabelText="Cards"
+          floatingLabelText="Select a cards"
           value={this.state.value}
           onChange={this.handleChange}
+          style={styles.customWidth}
         >
-          {this.state.cards}
+          {jsxCards}
         </SelectField>
       </div>
     );

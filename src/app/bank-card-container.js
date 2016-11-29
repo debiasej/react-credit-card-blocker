@@ -26,7 +26,7 @@ class BankCardContainer extends Component {
   render() {
     return (
       <Card>
-        <CardTitle title="Select a card" />
+        <CardTitle title="Cards" />
         <CardActions>
           <CardSelector cards={this.props.cards} />
           {this.state.showPasswordField ?  <ConfirmOperationTextField /> : null}

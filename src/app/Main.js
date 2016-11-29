@@ -4,7 +4,8 @@ import { deepOrange500 } from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import BankCardContainer from './bank-card-container.js';
-import HTTPRequest from './http-request.js';
+
+//import fetch from 'fetch';
 
 const muiTheme = getMuiTheme({
   palette: {
@@ -26,6 +27,21 @@ class Main extends Component {
     }
   }
 
+  componentDidMount() {
+    var that = this;
+
+    fetch(this.state.url)
+    .then(function(response) {
+      if (response.status >= 400) {
+        throw new Error("Bad response from server");
+      }
+      return response.json();
+    })
+    .then(function(data) {
+      that.setState({ cards: data.cuentasOrigen });
+    });
+}
+
   buttonClickedHandler = () => {
     if (this.state.step == "blockOrUnblockCard") {
         this.setState({
@@ -41,11 +57,6 @@ class Main extends Component {
     }
   }
 
-  responseHandler = ( result ) =>  {
-    debugger;
-    this.setState( {cards: result.body.cuentasOrigen} );
-  }
-
   render() {
     return (
       <MuiThemeProvider muiTheme={ muiTheme }>
@@ -55,7 +66,6 @@ class Main extends Component {
           step={ this.state.step }
           cards={ this.state.cards }
           buttonClicked={ this.buttonClickedHandler } />
-        <HTTPRequest url={ this.state.url } data ={ this.responseHandler } />
       </div>
       </MuiThemeProvider>
     );
