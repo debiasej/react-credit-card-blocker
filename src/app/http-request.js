@@ -8,7 +8,7 @@ class HTTPRequest extends Component {
   }
 
   render() {
-    
+
     return (
       <Request
         url={this.props.url}
@@ -21,6 +21,8 @@ class HTTPRequest extends Component {
             if (loading) {
               return <div>loading...</div>;
             } else {
+              debugger;
+              this.props.data(result);
               return <div><pre>{JSON.stringify(result, null, 2) }</pre></div>;;
             }
           }

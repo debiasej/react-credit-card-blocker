@@ -4,7 +4,6 @@ import FlatButton from 'material-ui/FlatButton';
 import CardSelector from './card-selector.js';
 import ConfirmOperationTextField from './confirm-operation-textfield.js';
 
-
 class BankCardContainer extends Component {
 
   constructor(props, context) {
@@ -21,6 +20,7 @@ class BankCardContainer extends Component {
     this.setState({
       showPasswordField: !this.state.showPasswordField
     });
+    this.props.buttonClicked();
   }
 
   render() {
@@ -28,10 +28,13 @@ class BankCardContainer extends Component {
       <Card>
         <CardTitle title="Select a card" />
         <CardActions>
-          <CardSelector />
+          <CardSelector cards={this.props.cards} />
           {this.state.showPasswordField ?  <ConfirmOperationTextField /> : null}
           <br />
-          <FlatButton label="Continue" primary={true} onTouchTap={this.handleTouchTap} />
+          <FlatButton
+            label={ this.props.step == "blockOrUnblockCard" ? "Continue" : "Firmar" }
+            primary={true}
+            onTouchTap={this.handleTouchTap} />
         </CardActions>
       </Card>
     );

@@ -8,31 +8,37 @@ const styles = {
   },
 };
 
-/**
- * `SelectField` is implemented as a controlled component,
- * with the current selection set through the `value` property.
- * The `SelectField` can be disabled with the `disabled` property.
- */
 class CardSelector extends Component {
-  state = {
-    value: 1,
-  };
+  constructor (props) {
+    super(props);
 
-  handleChange = (event, index, value) => this.setState({value});
+    this.state = {
+      value: 0,
+      cards: []
+    };
+
+    this.state.cards =  this.props.cards.map( (card, index) => {
+      debugger;
+      return (
+        <MenuItem key={index} value={index} primaryText= {`Card ${card.alias}`} />
+      );
+    });
+  }
+
+  handleChange = (event, index, value) => {
+    this.setState({value});
+  };
 
   render() {
     return (
       <div>
-
         <SelectField
           floatingLabelText="Cards"
           value={this.state.value}
           onChange={this.handleChange}
         >
-          <MenuItem value={1} primaryText="Card 1" />
-          <MenuItem value={2} primaryText="Card 2" />
+          {this.state.cards}
         </SelectField>
-
       </div>
     );
   }
