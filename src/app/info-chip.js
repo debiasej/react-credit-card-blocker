@@ -2,15 +2,16 @@ import React from 'react';
 import Chip from 'material-ui/Chip';
 import FontIcon from 'material-ui/FontIcon';
 import SvgIconFace from 'material-ui/svg-icons/action/face';
-import {green300, indigo900} from 'material-ui/styles/colors';
+import {green500, red500, white} from 'material-ui/styles/colors';
 
 const styles = {
   chip: {
     margin: 4
   },
   wrapper: {
-    display: 'flex',
-    flexWrap: 'wrap'
+    display: 'inline-block',
+    float: 'right',
+    margin: '12px 15px 0px 0px'
   },
 };
 
@@ -20,13 +21,17 @@ class InfoChip extends React.Component {
   }
 
   render() {
+
+    const cardState = this.props.chipState == "unblocked" ? green500 : red500;
+
     return (
       <div style={styles.wrapper}>
         <Chip
-          backgroundColor={green300}
+          labelColor={ white }
+          backgroundColor={ cardState }
           style={styles.chip}
         >
-          Unblocked!
+        {this.props.chipState }
         </Chip>
       </div>
     );

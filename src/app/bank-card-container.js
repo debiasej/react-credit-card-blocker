@@ -5,6 +5,12 @@ import CardSelector from './card-selector.js';
 import ConfirmOperationTextField from './confirm-operation-textfield.js';
 import InfoChip from './info-chip.js';
 
+const style = {
+
+  width: '50%',
+  display: 'inline-block'
+};
+
 class BankCardContainer extends Component {
 
   constructor(props, context) {
@@ -27,12 +33,13 @@ class BankCardContainer extends Component {
   render() {
     return (
       <Card>
-        <CardTitle title="Cards" />
+        <div className="card-wrapper">
+        <CardTitle style={ style } title="Cards" />
+        <InfoChip chipState={ this.props.chipState } />
+        </div>
         <CardActions>
           <CardSelector cards={this.props.cards} onChange={ this.props.selectorOnChange } />
           {this.state.showPasswordField ?  <ConfirmOperationTextField /> : null}
-          <br />
-          <InfoChip />
           <br />
           <FlatButton
             label={ this.props.step == "blockOrUnblockCard" ? "Continue" : "Firmar" }

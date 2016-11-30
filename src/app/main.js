@@ -22,7 +22,7 @@ class Main extends Component {
     this.state = {
       step: "blockOrUnblockCard",
       cards: [],
-      chipStatus: null,
+      chipState: null,
       url:  `${baseUrl}tarjetas`
     }
   }
@@ -59,7 +59,7 @@ class Main extends Component {
     let cardId = JSON.stringify({ cardId: "" });
 
     httpPost(`${baseUrl}ValidarBloqueoDesbloqueoTarjetas`, cardId, data => {
-      this.setState({ chipStatus: eval(data.isBlocked) });
+      this.setState({ chipState: eval(data.isBlocked) ? 'blocked' : 'unblocked' });
     });
   }
 
@@ -71,7 +71,7 @@ class Main extends Component {
         <BankCardContainer
           step={ this.state.step }
           cards={ this.state.cards }
-          chipStatus= { this.state.chipStatus }
+          chipState= { this.state.chipState }
           buttonClicked={ this.buttonClickedHandler }
           selectorOnChange={ this.selectorOnChangeHandler } />
       </div>
