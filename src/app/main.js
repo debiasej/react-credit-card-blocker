@@ -22,6 +22,7 @@ class Main extends Component {
     this.state = {
       step: "blockOrUnblockCard",
       cards: [],
+      currentCard: -1,
       chipState: null,
       url:  `${baseUrl}tarjetas`
     }
@@ -30,8 +31,10 @@ class Main extends Component {
   componentDidMount() {
 
     httpGet(this.state.url, data => {
-      this.setState({ cards: data.cuentasOrigen });
-      this.selectorOnChangeHandler();
+
+      let initCurrentCard = data.cuentasOrigen.length > 0 ? 0 : -1;
+      this.setState({ cards: data.cuentasOrigen, currentCard: initCurrentCard });
+      this.selectorOnChangeHandler(initCurrentCard);
     });
   }
 
@@ -54,12 +57,16 @@ class Main extends Component {
     // }
   }
 
-  selectorOnChangeHandler = () => {
+  // TODO: Change eval in producction
+  selectorOnChangeHandler = (selectorValue) => {
 
-    let cardId = JSON.stringify({ cardId: "" });
+    let cardId = JSON.stringify({ cardId: this.state.cards[selectorValue].identificador });
 
     httpPost(`${baseUrl}ValidarBloqueoDesbloqueoTarjetas`, cardId, data => {
-      this.setState({ chipState: eval(data.isBlocked) ? 'blocked' : 'unblocked' });
+      this.setState({
+        chipState: eval(data.isBlocked) ? 'blocked' : 'unblocked',
+        currentCard: selectorValue
+      });
     });
   }
 

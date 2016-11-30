@@ -19,7 +19,7 @@ class CardSelector extends Component {
 
   handleChange = (event, index, value) => {
     this.setState({value});
-    this.props.onChange();
+    this.props.onChange(value);
   };
 
   render() {
