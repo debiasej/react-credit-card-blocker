@@ -29,7 +29,7 @@ class BankCardContainer extends Component {
       <Card>
         <CardTitle title="Cards" />
         <CardActions>
-          <CardSelector cards={this.props.cards} />
+          <CardSelector cards={this.props.cards} onChange={ this.props.selectorOnChange } />
           {this.state.showPasswordField ?  <ConfirmOperationTextField /> : null}
           <br />
           <InfoChip />

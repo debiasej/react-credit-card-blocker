@@ -19,6 +19,7 @@ class CardSelector extends Component {
 
   handleChange = (event, index, value) => {
     this.setState({value});
+    this.props.onChange();
   };
 
   render() {
@@ -32,6 +33,11 @@ class CardSelector extends Component {
       );
     })
 
+    const jsxNoCards =
+      <MenuItem
+        value={0}
+        primaryText= {'No cards'} />;
+
     return (
       <div>
         <SelectField
@@ -40,7 +46,7 @@ class CardSelector extends Component {
           onChange={this.handleChange}
           style={styles.customWidth}
         >
-          {jsxCards}
+          {jsxCards.length > 0 ? jsxCards : jsxNoCards }
         </SelectField>
       </div>
     );
