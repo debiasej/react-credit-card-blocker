@@ -3,6 +3,7 @@ import {Card, CardActions, CardTitle} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import CardSelector from './card-selector.js';
 import ConfirmOperationTextField from './confirm-operation-textfield.js';
+import InfoChip from './info-chip.js';
 
 class BankCardContainer extends Component {
 
@@ -30,6 +31,8 @@ class BankCardContainer extends Component {
         <CardActions>
           <CardSelector cards={this.props.cards} />
           {this.state.showPasswordField ?  <ConfirmOperationTextField /> : null}
+          <br />
+          <InfoChip />
           <br />
           <FlatButton
             label={ this.props.step == "blockOrUnblockCard" ? "Continue" : "Firmar" }
