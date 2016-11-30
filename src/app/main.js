@@ -15,6 +15,20 @@ const muiTheme = getMuiTheme({
 
 const baseUrl = "http://demo9087061.mockable.io/";
 
+function fetchUrl(url, callback) {
+
+  fetch(url)
+  .then(function(response) {
+    if (response.status >= 400) {
+      throw new Error("Bad response from server");
+    }
+    return response.json();
+  })
+  .then(function(data) {
+    callback(data);
+  });
+}
+
 class Main extends Component {
 
   constructor(props, context) {
@@ -28,31 +42,26 @@ class Main extends Component {
   }
 
   componentDidMount() {
-    var that = this;
 
-    fetch(this.state.url)
-    .then(function(response) {
-      if (response.status >= 400) {
-        throw new Error("Bad response from server");
-      }
-      return response.json();
-    })
-    .then(function(data) {
-      that.setState({ cards: data.cuentasOrigen });
+    fetchUrl(this.state.url, data => {
+      this.setState({ cards: data.cuentasOrigen });
     });
-}
+  }
 
   buttonClickedHandler = () => {
+
     if (this.state.step == "blockOrUnblockCard") {
-        this.setState({
-          step: "signOperation",
-          url: `${baseUrl}blockcard`
+      this.setState({ step: "signOperation", url: `${baseUrl}blockcard` }, () => {
+        fetchUrl(this.state.url, data => {
+          console.log(data.result);
         });
+      });
 
     } else {
-      this.setState({
-        step: "blockOrUnblockCard",
-        url: `${baseUrl}tarjetas`
+      this.setState({ step: "blockOrUnblockCard", url: `${baseUrl}tarjetas` }, () => {
+          fetchUrl(`${baseUrl}tarjetas`, data => {
+            this.setState({ cards: data.cuentasOrigen });
+          });
       });
     }
   }
