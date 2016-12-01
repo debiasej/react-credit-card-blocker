@@ -32,8 +32,9 @@ class BankCardContainer extends Component {
   }
 
   render() {
+    const blockOrUnBlockButtonText = this.props.isCurrentCardBlocked ? 'unblock card' : 'block card';
     const buttonText = (this.props.step == appStep.READY || this.props.step == appStep.INIT) ?
-     "Continue" : "Firmar";
+     blockOrUnBlockButtonText : "Firmar";
 
      const buttonState = this.props.step != appStep.INIT ? false : true;
 
@@ -41,7 +42,7 @@ class BankCardContainer extends Component {
       <Card>
         <div className="card-wrapper">
         <CardTitle style={ style } title="Cards" />
-        <InfoChip chipState={ this.props.chipState } />
+        <InfoChip chipState={ this.props.isCurrentCardBlocked ? 'blocked' : 'unblocked' } />
         </div>
         <CardActions>
           <CardSelector

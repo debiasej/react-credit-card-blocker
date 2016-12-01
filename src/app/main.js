@@ -24,7 +24,7 @@ class Main extends Component {
       step: appStep.INIT,
       cards: [],
       currentCard: -1,
-      chipState: null,
+      isCurrentCardBlocked: null,
       url:  `${baseUrl}tarjetas`
     }
   }
@@ -68,7 +68,7 @@ class Main extends Component {
       this.setState({
         step: appStep.READY,
         currentCard: selectorValue,
-        chipState: eval(data.isBlocked) ? 'blocked' : 'unblocked'
+        isCurrentCardBlocked: eval(data.isBlocked)
       });
     });
   }
@@ -81,7 +81,7 @@ class Main extends Component {
         <BankCardContainer
           step={ this.state.step }
           cards={ this.state.cards }
-          chipState= { this.state.chipState }
+          isCurrentCardBlocked= { this.state.isCurrentCardBlocked }
           buttonClicked={ this.buttonClickedHandler }
           selectorOnChange={ this.selectorOnChangeHandler } />
       </div>
