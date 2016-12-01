@@ -1,3 +1,4 @@
+import {appStep} from '../config/index.js'
 import React, { Component } from 'react';
 import AppBar from 'material-ui/AppBar';
 import { deepOrange500 } from 'material-ui/styles/colors';
@@ -20,7 +21,7 @@ class Main extends Component {
     super(props, context);
 
     this.state = {
-      step: "blockOrUnblockCard",
+      step: appStep.INIT,
       cards: [],
       currentCard: -1,
       chipState: null,
@@ -40,8 +41,8 @@ class Main extends Component {
 
   buttonClickedHandler = () => {
 
-    if (this.state.step == "blockOrUnblockCard") {
-      this.setState({ step: "signOperation", url: `${baseUrl}blockcard` }, () => {
+    if (this.state.step == appStep.READY) {
+      this.setState({ step: appStep.SIGNATURE, url: `${baseUrl}blockcard` }, () => {
         httpGet(this.state.url, data => {
           console.log(data.result);
         });
@@ -62,10 +63,12 @@ class Main extends Component {
 
     let cardId = JSON.stringify({ cardId: this.state.cards[selectorValue].identificador });
 
+    this.setState({ step: appStep.INIT });
     httpPost(`${baseUrl}ValidarBloqueoDesbloqueoTarjetas`, cardId, data => {
       this.setState({
-        chipState: eval(data.isBlocked) ? 'blocked' : 'unblocked',
-        currentCard: selectorValue
+        step: appStep.READY,
+        currentCard: selectorValue,
+        chipState: eval(data.isBlocked) ? 'blocked' : 'unblocked'
       });
     });
   }

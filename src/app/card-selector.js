@@ -42,9 +42,10 @@ class CardSelector extends Component {
       <div>
         <SelectField
           floatingLabelText="Select a cards"
-          value={this.state.value}
-          onChange={this.handleChange}
-          style={styles.customWidth}
+          style={ styles.customWidth }
+          value={ this.state.value }
+          onChange={ this.handleChange }
+          disabled={ false }
         >
           {jsxCards.length > 0 ? jsxCards : jsxNoCards }
         </SelectField>

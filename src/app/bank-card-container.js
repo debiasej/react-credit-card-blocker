@@ -1,3 +1,4 @@
+import {appStep} from '../config/index.js'
 import React, {Component} from 'react';
 import {Card, CardActions, CardTitle} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
@@ -31,6 +32,11 @@ class BankCardContainer extends Component {
   }
 
   render() {
+    const buttonText = (this.props.step == appStep.READY || this.props.step == appStep.INIT) ?
+     "Continue" : "Firmar";
+
+     const buttonState = this.props.step != appStep.INIT ? false : true;
+
     return (
       <Card>
         <div className="card-wrapper">
@@ -38,13 +44,17 @@ class BankCardContainer extends Component {
         <InfoChip chipState={ this.props.chipState } />
         </div>
         <CardActions>
-          <CardSelector cards={this.props.cards} onChange={ this.props.selectorOnChange } />
+          <CardSelector
+            cards={ this.props.cards }
+            onChange={ this.props.selectorOnChange }
+            disabled={ true } />
           {this.state.showPasswordField ?  <ConfirmOperationTextField /> : null}
           <br />
           <FlatButton
-            label={ this.props.step == "blockOrUnblockCard" ? "Continue" : "Firmar" }
-            primary={true}
-            onTouchTap={this.handleTouchTap} />
+            label={ buttonText }
+            primary={ true }
+            onTouchTap={ this.handleTouchTap }
+            disabled={ buttonState } />
         </CardActions>
       </Card>
     );
