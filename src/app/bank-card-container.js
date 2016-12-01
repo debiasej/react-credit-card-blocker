@@ -47,7 +47,7 @@ class BankCardContainer extends Component {
           <CardSelector
             cards={ this.props.cards }
             onChange={ this.props.selectorOnChange }
-            disabled={ true } />
+            disabled={ this.props.step == appStep.SIGNATURE } />
           {this.state.showPasswordField ?  <ConfirmOperationTextField /> : null}
           <br />
           <FlatButton

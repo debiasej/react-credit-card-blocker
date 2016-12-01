@@ -45,7 +45,7 @@ class CardSelector extends Component {
           style={ styles.customWidth }
           value={ this.state.value }
           onChange={ this.handleChange }
-          disabled={ false }
+          disabled={ this.props.disabled }
         >
           {jsxCards.length > 0 ? jsxCards : jsxNoCards }
         </SelectField>
