@@ -1,13 +1,27 @@
+import appUrls from '../config/urls';
 
-const baseUrl = "http://demo9087061.mockable.io/";
 
-var httpGet = function(url, callback) {
+let getCards = function (callback) {
+
+  httpGet(`${appUrls.baseUrl}${appUrls.cards}`, (data) => {
+    callback(data);
+  });
+}
+
+let postCheckIfCardIsBlockedOrUnBlocked = function (cardId, callback) {
+
+  httpPost(`${appUrls.baseUrl}${appUrls.checkIfCardIsBlockedOrUnBlocked}`, cardId, (data) => {
+    callback(data);
+  });
+}
+
+let httpGet = function(url, callback) {
 
   let requestData = { url: url, params: {} };
   httpRequest(requestData, data => { callback(data) });
 }
 
-var httpPost = function(url, data, callback) {
+let httpPost = function(url, data, callback) {
 
   let requestData = {
     url: url,
@@ -19,7 +33,7 @@ var httpPost = function(url, data, callback) {
   httpRequest(requestData, data => { callback(data) });
 }
 
-var httpRequest = function fetchUrl(requestData, callback) {
+let httpRequest = function fetchUrl(requestData, callback) {
 
   fetch(requestData.url, requestData.params)
   .then(function(response) {
@@ -33,11 +47,13 @@ var httpRequest = function fetchUrl(requestData, callback) {
   });
 }
 
-var fetchStatus = function (cardId, callback) {
+// var fetchStatus = function (cardId, callback) {
+//
+//   httpGet(`${baseUrl}ValidarBloqueoDesbloqueoTarjetas`, data => {
+//     callback(data.isBlocked );
+//   });
+// }
 
-  httpGet(`${baseUrl}ValidarBloqueoDesbloqueoTarjetas`, data => {
-    callback(data.isBlocked );
-  });
-}
+let appHttp = {getCards, postCheckIfCardIsBlockedOrUnBlocked};
 
-export { httpRequest as default, httpGet, httpPost }
+export default appHttp;

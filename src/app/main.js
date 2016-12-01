@@ -1,19 +1,17 @@
-import {appStep} from '../config/index.js'
+import {appStep} from '../config/index'
 import React, { Component } from 'react';
 import AppBar from 'material-ui/AppBar';
 import { deepOrange500 } from 'material-ui/styles/colors';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import BankCardContainer from './bank-card-container.js';
-import httpRequest, { httpGet, httpPost  } from '../requests/http-requests';
+import BankCardContainer from './bank-card-container';
+import appHttp from '../requests/http-requests';
 
 const muiTheme = getMuiTheme({
   palette: {
     accent1Color: deepOrange500,
   },
 });
-
-const baseUrl = "http://demo9087061.mockable.io/";
 
 class Main extends Component {
 
@@ -24,14 +22,13 @@ class Main extends Component {
       step: appStep.INIT,
       cards: [],
       currentCard: -1,
-      isCurrentCardBlocked: null,
-      url:  `${baseUrl}tarjetas`
+      isCurrentCardBlocked: null
     }
   }
 
   componentDidMount() {
 
-    httpGet(this.state.url, data => {
+    appHttp.getCards( data => {
 
       let initCurrentCard = data.cuentasOrigen.length > 0 ? 0 : -1;
       this.setState({ cards: data.cuentasOrigen, currentCard: initCurrentCard });
@@ -42,7 +39,8 @@ class Main extends Component {
   buttonClickedHandler = () => {
 
     if (this.state.step == appStep.READY) {
-      this.setState({ step: appStep.SIGNATURE, url: `${baseUrl}blockcard` }, () => {
+
+      this.setState({ step: appStep.SIGNATURE }, () => {
         httpGet(this.state.url, data => {
           console.log(data.result);
         });
@@ -64,7 +62,8 @@ class Main extends Component {
     let cardId = JSON.stringify({ cardId: this.state.cards[selectorValue].identificador });
 
     this.setState({ step: appStep.INIT });
-    httpPost(`${baseUrl}ValidarBloqueoDesbloqueoTarjetas`, cardId, data => {
+
+    appHttp.postCheckIfCardIsBlockedOrUnBlocked( cardId, (data) => {
       this.setState({
         step: appStep.READY,
         currentCard: selectorValue,
