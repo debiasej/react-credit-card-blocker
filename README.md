@@ -1,6 +1,6 @@
 # Card blocker/unblocker - Example Project
 
-This is an example app that uses [React](http://facebook.github.io/react/), [Material-UI](http://callemall.github.io/material-ui/) and [fetch]https://www.npmjs.com/package/fetch
+This is an example app that uses [React](http://facebook.github.io/react/), [Material-UI](http://callemall.github.io/material-ui/) and [fetch](https://www.npmjs.com/package/fetch).
 
 ## Installation
 
