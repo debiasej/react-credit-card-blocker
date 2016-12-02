@@ -26,52 +26,6 @@ class Main extends Component {
     }
   }
 
-  componentDidMount() {
-
-    appHttp.getCards( data => {
-
-      let initCurrentCard = data.cuentasOrigen.length > 0 ? 0 : -1;
-      this.setState({ cards: data.cuentasOrigen, currentCard: initCurrentCard });
-      this.selectorOnChangeHandler(initCurrentCard);
-    });
-  }
-
-  buttonClickedHandler = () => {
-
-    if (this.state.step == appStep.READY) {
-
-      this.setState({ step: appStep.SIGNATURE }, () => {
-        httpGet(this.state.url, data => {
-          console.log(data.result);
-        });
-      });
-
-    }
-    // else {
-    //   this.setState({ step: "blockOrUnblockCard", url: `${baseUrl}tarjetas` }, () => {
-    //       fetchUrl(`${baseUrl}tarjetas`, data => {
-    //         this.setState({ cards: data.cuentasOrigen });
-    //       });
-    //   });
-    // }
-  }
-
-  // TODO: Change eval in producction
-  selectorOnChangeHandler = (selectorValue) => {
-
-    let cardId = JSON.stringify({ cardId: this.state.cards[selectorValue].identificador });
-
-    this.setState({ step: appStep.INIT });
-
-    appHttp.postCheckIfCardIsBlockedOrUnBlocked( cardId, (data) => {
-      this.setState({
-        step: appStep.READY,
-        currentCard: selectorValue,
-        isCurrentCardBlocked: eval(data.isBlocked)
-      });
-    });
-  }
-
   render() {
     return (
       <MuiThemeProvider muiTheme={ muiTheme }>
@@ -81,11 +35,71 @@ class Main extends Component {
           step={ this.state.step }
           cards={ this.state.cards }
           isCurrentCardBlocked= { this.state.isCurrentCardBlocked }
-          buttonClicked={ this.buttonClickedHandler }
-          selectorOnChange={ this.selectorOnChangeHandler } />
+          selectorOnChange={ this.selectorOnChangeHandler }
+          buttonClicked={ this.buttonClickedHandler } />
       </div>
       </MuiThemeProvider>
     );
+  }
+
+  componentDidMount() {
+
+    appHttp.getCards( data => {
+      let initCurrentCard = data.cuentasOrigen.length > 0 ? 0 : -1;
+      this.setState({ cards: data.cuentasOrigen, currentCard: initCurrentCard });
+      this.selectorOnChangeHandler(initCurrentCard);
+    });
+  }
+
+  // TODO: Change eval in producction
+  selectorOnChangeHandler = (selectorValue) => {
+    let cardId = {identificadorTarjeta: this.state.cards[selectorValue].identificador};
+
+    this.setState({ step: appStep.INIT });
+    appHttp.postCheckIfCardIsBlockedOrUnBlocked( JSON.stringify( cardId ), (data) => {
+      this.setState({
+        step: appStep.READY,
+        currentCard: selectorValue,
+        isCurrentCardBlocked: eval(data.isBlocked)
+      });
+    });
+  }
+
+  buttonClickedHandler = () => {
+
+    switch ( this.state.step ) {
+      case appStep.READY:
+        this.setState({ step: appStep.SIGNATURE }, () => {
+          this._blockOrUnblockCard();
+        });
+        break;
+
+      default:
+        console.err("The operation is not allowed");
+    }
+  }
+
+  _blockOrUnblockCard() {
+
+    let cardRequestData = {
+      identificadorTarjeta: this.state.cards[this.state.currentCard].identificador,
+      tipoAccionBloque: ""
+    };
+
+    if (this.state.isCurrentCardBlocked) {
+      cardRequestData.tipoAccionBloque = "ENCENDER";
+
+      appHttp.postUnblockCard( cardRequestData, cardRequestData => {
+        console.log(cardRequestData);
+      });
+
+    } else {
+      cardRequestData.tipoAccionBloque = "APAGAR";
+
+      appHttp.postBlockCard( cardRequestData, cardRequestData => {
+        console.log(cardRequestData);
+      });
+    }
   }
 }
 
