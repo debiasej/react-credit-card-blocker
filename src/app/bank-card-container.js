@@ -18,7 +18,7 @@ class BankCardContainer extends Component {
     super(props, context);
 
     this.state = {
-      showPasswordField: false,
+      showPasswordField: false
     };
 
     this.handleTouchTap = this.handleTouchTap.bind(this);
@@ -36,7 +36,8 @@ class BankCardContainer extends Component {
     const buttonText = (this.props.step == appStep.READY || this.props.step == appStep.INIT) ?
      blockOrUnBlockButtonText : "Firmar";
 
-     const buttonState = this.props.step != appStep.INIT ? false : true;
+    const stepIsInit= this.props.step == appStep.INIT ? true  : false;
+    const isPasswordEmpty = (this.props.step == appStep.SIGNATURE && this.props.isPasswordEmpty);
 
     return (
       <Card>
@@ -49,13 +50,14 @@ class BankCardContainer extends Component {
             cards={ this.props.cards }
             onChange={ this.props.selectorOnChange }
             disabled={ this.props.step == appStep.SIGNATURE } />
-          {this.state.showPasswordField ?  <ConfirmOperationTextField /> : null}
+          { this.state.showPasswordField ?
+            <ConfirmOperationTextField onInputChange={ this.props.onInputChange } /> : null }
           <br />
           <FlatButton
             label={ buttonText }
             primary={ true }
             onTouchTap={ this.handleTouchTap }
-            disabled={ buttonState } />
+            disabled={ stepIsInit || isPasswordEmpty } />
         </CardActions>
       </Card>
     );

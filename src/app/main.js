@@ -22,11 +22,15 @@ class Main extends Component {
       step: appStep.INIT,
       cards: [],
       currentCard: -1,
-      isCurrentCardBlocked: null
+      isCurrentCardBlocked: null,
+      typedPassword: ""
     }
   }
 
   render() {
+
+    const isPasswordEmpty = (this.state.typedPassword).length == 0 ? true : false;
+
     return (
       <MuiThemeProvider muiTheme={ muiTheme }>
       <div>
@@ -36,7 +40,9 @@ class Main extends Component {
           cards={ this.state.cards }
           isCurrentCardBlocked= { this.state.isCurrentCardBlocked }
           selectorOnChange={ this.selectorOnChangeHandler }
-          buttonClicked={ this.buttonClickedHandler } />
+          buttonClicked={ this.buttonClickedHandler }
+          onInputChange={ this.onInputChangeHandler }
+          isPasswordEmpty={ isPasswordEmpty } />
       </div>
       </MuiThemeProvider>
     );
@@ -66,7 +72,6 @@ class Main extends Component {
   }
 
   buttonClickedHandler = () => {
-
     switch ( this.state.step ) {
       case appStep.READY:
         this.setState({ step: appStep.SIGNATURE }, () => {
@@ -100,6 +105,10 @@ class Main extends Component {
         console.log(cardRequestData);
       });
     }
+  }
+
+  onInputChangeHandler = (event) => {
+      this.setState({ typedPassword: event.target.value });
   }
 }
 

@@ -7,13 +7,14 @@ const styles = {
   },
 };
 
-const TextFieldExampleSimple = () => (
+const TextFieldExampleSimple = (props) => (
   <div>
     <TextField
       hintText="Password Field"
       floatingLabelText="Password"
       type="password"
-      style={styles.customWidth}
+      style={ styles.customWidth }
+      onChange={ props.onInputChange }
     />
   </div>
 );
