@@ -1,5 +1,6 @@
 import appUrls from '../config/urls';
 
+// API
 
 let getCards = function (callback) {
   httpGet(`${appUrls.baseUrl}${appUrls.cards}`, (responseData) => {
@@ -24,6 +25,8 @@ let postBlockCard = function (requestData, callback) {
     callback(responseData);
   });
 }
+
+// Generic requests
 
 let httpGet = function(url, callback) {
   let requestData = { url: url, params: {} };
@@ -51,6 +54,9 @@ let httpRequest = function fetchUrl(requestData, callback) {
   })
   .then(function(responseData) {
     callback(responseData);
+  })
+  .catch(function(error) {
+    console.log('There has been a problem with your fetch operation: ' + error.message);
   });
 }
 
