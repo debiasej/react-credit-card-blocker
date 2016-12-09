@@ -27,6 +27,15 @@ class Main extends Component {
     }
   }
 
+  componentDidMount() {
+
+    appHttp.getCards( data => {
+      let initCurrentCard = data.cuentasOrigen.length > 0 ? 0 : -1;
+      this.setState({ cards: data.cuentasOrigen, currentCard: initCurrentCard });
+      this.selectorOnChangeHandler(initCurrentCard);
+    });
+  }
+
   render() {
 
     const isPasswordEmpty = (this.state.typedPassword).length == 0 ? true : false;
@@ -41,20 +50,12 @@ class Main extends Component {
           isCurrentCardBlocked= { this.state.isCurrentCardBlocked }
           selectorOnChange={ this.selectorOnChangeHandler }
           buttonClicked={ this.buttonClickedHandler }
+          backButtonClicked={ this.backButtonClickedHandler }
           onInputChange={ this.onInputChangeHandler }
           isPasswordEmpty={ isPasswordEmpty } />
       </div>
       </MuiThemeProvider>
     );
-  }
-
-  componentDidMount() {
-
-    appHttp.getCards( data => {
-      let initCurrentCard = data.cuentasOrigen.length > 0 ? 0 : -1;
-      this.setState({ cards: data.cuentasOrigen, currentCard: initCurrentCard });
-      this.selectorOnChangeHandler(initCurrentCard);
-    });
   }
 
   // TODO: Change eval in producction
@@ -105,6 +106,16 @@ class Main extends Component {
         console.log(cardRequestData);
       });
     }
+  }
+
+  backButtonClickedHandler = () => {
+    this.setState({
+      step: appStep.INIT,
+      cards: [],
+      currentCard: -1,
+      isCurrentCardBlocked: null,
+      typedPassword: ""
+    });
   }
 
   onInputChangeHandler = (event) => {

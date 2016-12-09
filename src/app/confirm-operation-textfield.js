@@ -13,7 +13,7 @@ const TextFieldExampleSimple = (props) => (
       hintText="Password Field"
       floatingLabelText="Password"
       type="password"
-      style={ styles.customWidth }
+      style={ Object.assign(styles.customWidth, props.customStyle) }
       onChange={ props.onInputChange }
     />
   </div>

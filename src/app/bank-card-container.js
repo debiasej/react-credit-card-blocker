@@ -7,9 +7,16 @@ import ConfirmOperationTextField from './confirm-operation-textfield.js';
 import InfoChip from './info-chip.js';
 
 const style = {
-
-  width: '50%',
-  display: 'inline-block'
+  customWidth: {
+    width: '50%',
+    display: 'inline-block'
+  },
+  hidden: {
+    display: 'none'
+  },
+  shown: {
+    display: 'inline-block'
+  }
 };
 
 class BankCardContainer extends Component {
@@ -26,7 +33,7 @@ class BankCardContainer extends Component {
 
   handleTouchTap() {
     this.setState({
-      showPasswordField: !this.state.showPasswordField
+      showPasswordField: this.props.step == appStep.SIGNATURE
     });
     this.props.buttonClicked();
   }
@@ -42,7 +49,7 @@ class BankCardContainer extends Component {
     return (
       <Card>
         <div className="card-wrapper">
-        <CardTitle style={ style } title="Cards" />
+        <CardTitle style={ style.customWidth } title="Cards" />
         <InfoChip chipState={ this.props.isCurrentCardBlocked ? 'blocked' : 'unblocked' } />
         </div>
         <CardActions>
@@ -50,18 +57,28 @@ class BankCardContainer extends Component {
             cards={ this.props.cards }
             onChange={ this.props.selectorOnChange }
             disabled={ this.props.step == appStep.SIGNATURE } />
-          { this.state.showPasswordField ?
-            <ConfirmOperationTextField onInputChange={ this.props.onInputChange } /> : null }
+
+          <ConfirmOperationTextField
+            customStyle= { this.props.step != appStep.SIGNATURE ? style.hidden : style.shown }
+            onInputChange={ this.props.onInputChange } />
+
           <br />
           <FlatButton
             label={ buttonText }
             primary={ true }
             onTouchTap={ this.handleTouchTap }
             disabled={ stepIsInit || isPasswordEmpty } />
+          <FlatButton
+            label={ "GO BACK" }
+            primary={ true }
+            onTouchTap={ this.props.backButtonClicked } />
         </CardActions>
       </Card>
     );
   }
 }
+
+//          {this.state.showPasswordField &&
+//            <ConfirmOperationTextField onInputChange={ this.props.onInputChange } /> }
 
 export default BankCardContainer;
