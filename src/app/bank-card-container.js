@@ -24,17 +24,17 @@ class BankCardContainer extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.state = {
-      showPasswordField: false
-    };
+    // this.state = {
+    //   showPasswordField: false
+    // };
 
     this.handleTouchTap = this.handleTouchTap.bind(this);
   }
 
   handleTouchTap() {
-    this.setState({
-      showPasswordField: this.props.step == appStep.SIGNATURE
-    });
+    // this.setState({
+    //   showPasswordField: this.props.step == appStep.SIGNATURE
+    // });
     this.props.buttonClicked();
   }
 
@@ -58,9 +58,10 @@ class BankCardContainer extends Component {
             onChange={ this.props.selectorOnChange }
             disabled={ this.props.step == appStep.SIGNATURE } />
 
-          <ConfirmOperationTextField
-            customStyle= { this.props.step != appStep.SIGNATURE ? style.hidden : style.shown }
-            onInputChange={ this.props.onInputChange } />
+           {this.props.showPasswordField &&
+             <ConfirmOperationTextField onInputChange={ this.props.onInputChange } /> }
+
+
 
           <br />
           <FlatButton
@@ -80,5 +81,9 @@ class BankCardContainer extends Component {
 
 //          {this.state.showPasswordField &&
 //            <ConfirmOperationTextField onInputChange={ this.props.onInputChange } /> }
+
+// <ConfirmOperationTextField
+//   customStyle= { this.props.step != appStep.SIGNATURE ? style.hidden : style.shown }
+//   onInputChange={ this.props.onInputChange } />
 
 export default BankCardContainer;

@@ -23,6 +23,7 @@ class Main extends Component {
       cards: [],
       currentCard: -1,
       isCurrentCardBlocked: null,
+      showPasswordField: false,
       typedPassword: ""
     }
   }
@@ -47,6 +48,7 @@ class Main extends Component {
         <BankCardContainer
           step={ this.state.step }
           cards={ this.state.cards }
+          showPasswordField ={ this.state.showPasswordField }
           isCurrentCardBlocked= { this.state.isCurrentCardBlocked }
           selectorOnChange={ this.selectorOnChangeHandler }
           buttonClicked={ this.buttonClickedHandler }
@@ -92,11 +94,16 @@ class Main extends Component {
       tipoAccionBloque: ""
     };
 
+    let setShowPasswordField = () => {
+      this.setState({ showPasswordField: true });
+    }
+
     if (this.state.isCurrentCardBlocked) {
       cardRequestData.tipoAccionBloque = "ENCENDER";
 
       appHttp.postUnblockCard( cardRequestData, cardRequestData => {
         console.log(cardRequestData);
+        setShowPasswordField();
       });
 
     } else {
@@ -104,6 +111,7 @@ class Main extends Component {
 
       appHttp.postBlockCard( cardRequestData, cardRequestData => {
         console.log(cardRequestData);
+        setShowPasswordField();
       });
     }
   }
