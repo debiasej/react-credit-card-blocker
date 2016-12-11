@@ -29,35 +29,7 @@ class Main extends Component {
   }
 
   componentDidMount() {
-
-    appHttp.getCards( data => {
-      let initCurrentCard = data.cuentasOrigen.length > 0 ? 0 : -1;
-      this.setState({ cards: data.cuentasOrigen, currentCard: initCurrentCard });
-      this.selectorOnChangeHandler(initCurrentCard);
-    });
-  }
-
-  render() {
-
-    const isPasswordEmpty = (this.state.typedPassword).length == 0 ? true : false;
-
-    return (
-      <MuiThemeProvider muiTheme={ muiTheme }>
-      <div>
-        <AppBar title="Block or unblock" iconClassNameRight="muidocs-icon-navigation-expand-more" />
-        <BankCardContainer
-          step={ this.state.step }
-          cards={ this.state.cards }
-          showPasswordField ={ this.state.showPasswordField }
-          isCurrentCardBlocked= { this.state.isCurrentCardBlocked }
-          selectorOnChange={ this.selectorOnChangeHandler }
-          buttonClicked={ this.buttonClickedHandler }
-          backButtonClicked={ this.backButtonClickedHandler }
-          onInputChange={ this.onInputChangeHandler }
-          isPasswordEmpty={ isPasswordEmpty } />
-      </div>
-      </MuiThemeProvider>
-    );
+    this._getCards();
   }
 
   // TODO: Change eval in producction
@@ -87,6 +59,53 @@ class Main extends Component {
     }
   }
 
+  backButtonClickedHandler = () => {
+    this.setState({
+      step: appStep.INIT,
+      currentCard: -1,
+      isCurrentCardBlocked: null,
+      showPasswordField: false,
+      typedPassword: ""
+    }, () => {
+      this._getCards();
+    });
+  }
+
+  onInputChangeHandler = (event) => {
+      this.setState({ typedPassword: event.target.value });
+  }
+
+  render() {
+
+    const isPasswordEmpty = (this.state.typedPassword).length == 0 ? true : false;
+
+    return (
+      <MuiThemeProvider muiTheme={ muiTheme }>
+      <div>
+        <AppBar title="Block or unblock" iconClassNameRight="muidocs-icon-navigation-expand-more" />
+        <BankCardContainer
+          step={ this.state.step }
+          cards={ this.state.cards }
+          showPasswordField ={ this.state.showPasswordField }
+          isCurrentCardBlocked= { this.state.isCurrentCardBlocked }
+          selectorOnChange={ this.selectorOnChangeHandler }
+          buttonClicked={ this.buttonClickedHandler }
+          backButtonClicked={ this.backButtonClickedHandler }
+          onInputChange={ this.onInputChangeHandler }
+          isPasswordEmpty={ isPasswordEmpty } />
+      </div>
+      </MuiThemeProvider>
+    );
+  }
+
+  _getCards() {
+    appHttp.getCards( data => {
+      let initCurrentCard = data.cuentasOrigen.length > 0 ? 0 : -1;
+      this.setState({ cards: data.cuentasOrigen, currentCard: initCurrentCard });
+      this.selectorOnChangeHandler(initCurrentCard);
+    });
+  }
+
   _blockOrUnblockCard() {
 
     let cardRequestData = {
@@ -114,20 +133,6 @@ class Main extends Component {
         setShowPasswordField();
       });
     }
-  }
-
-  backButtonClickedHandler = () => {
-    this.setState({
-      step: appStep.INIT,
-      cards: [],
-      currentCard: -1,
-      isCurrentCardBlocked: null,
-      typedPassword: ""
-    });
-  }
-
-  onInputChangeHandler = (event) => {
-      this.setState({ typedPassword: event.target.value });
   }
 }
 
